@@ -1,85 +1,43 @@
 import axios from 'axios'
 
 export const state = {
-  currentUser: getSavedState('auth.currentUser'),
+  accessToken: '',
+  serviceUrl: 'https://r2.smarthealthit.org',
+  clientId: 'smart-1137192',
+  response: '',
+  endpoints: {
+    test: 'https://r2.smarthealthit.org',
+  },
 }
 
 export const mutations = {
-  SET_CURRENT_USER(state, newValue) {
-    state.currentUser = newValue
-    saveState('auth.currentUser', newValue)
-    setDefaultAuthHeaders(state)
+  SET_CLIENT_ID(state, newValue) {
+    state.clientId = newValue
+  },
+  SET_SERVICE_URL(state, newValue) {
+    state.serviceUrl = newValue
+  },
+  SET_RESPONSE(state, newValue) {
+    state.response = newValue
   },
 }
 
-export const getters = {
-  // Whether the user is currently logged in.
-  loggedIn(state) {
-    return !!state.currentUser
-  },
-}
+export const getters = {}
 
 export const actions = {
-  // This is automatically run in `src/state/store.js` when the app
-  // starts, along with any other actions named `init` in other modules.
-  init({ state, dispatch }) {
-    setDefaultAuthHeaders(state)
-    dispatch('validate')
-  },
-
-  // Logs in the current user.
-  logIn({ commit, dispatch, getters }, { username, password } = {}) {
-    if (getters.loggedIn) return dispatch('validate')
-
-    return axios
-      .post('/api/session', { username, password })
-      .then((response) => {
-        const user = response.data
-        commit('SET_CURRENT_USER', user)
-        return user
+  testCall({ state, commit }) {
+    axios.defaults.baseURL = state.serviceUrl
+    axios
+      .get('/patient/' + state.clientId, {
+        headers: {
+          Authorization: `Bearer ${state.access_token}`,
+        },
       })
-  },
-
-  // Logs out the current user.
-  logOut({ commit }) {
-    commit('SET_CURRENT_USER', null)
-  },
-
-  // Validates the current user's token and refreshes it
-  // with new data from the API.
-  validate({ commit, state }) {
-    if (!state.currentUser) return Promise.resolve(null)
-
-    return axios
-      .get('/api/session')
       .then((response) => {
-        const user = response.data
-        commit('SET_CURRENT_USER', user)
-        return user
+        commit('SET_RESPONSE', response)
       })
       .catch((error) => {
-        if (error.response && error.response.status === 401) {
-          commit('SET_CURRENT_USER', null)
-        }
-        return null
+        commit('SET_RESPONSE', error)
       })
   },
-}
-
-// ===
-// Private helpers
-// ===
-
-function getSavedState(key) {
-  return JSON.parse(window.localStorage.getItem(key))
-}
-
-function saveState(key, state) {
-  window.localStorage.setItem(key, JSON.stringify(state))
-}
-
-function setDefaultAuthHeaders(state) {
-  axios.defaults.headers.common.Authorization = state.currentUser
-    ? state.currentUser.token
-    : ''
 }
