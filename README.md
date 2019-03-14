@@ -4,10 +4,10 @@
 
 ```bash
 # 1. Clone the repository.
-git clone https://github.com/danner/fhir-vitals
+git clone https://github.com/danner/FHIR-vitals
 
 # 2. Enter the newly-cloned folder.
-cd fhir-vitals
+cd FHIR-vitals
 
 # 3. Install dependencies. Make sure yarn is installed: https://yarnpkg.com/lang/en/docs/install
 yarn
