@@ -1,9 +1,11 @@
 import axios from 'axios'
 
 export const state = {
-  accessToken: '',
+  clientId: '',
+  secret: '',
+  accessToken: 'foo',
   serviceUrl: 'https://r2.smarthealthit.org',
-  clientId: 'smart-1137192',
+  patientId: 'smart-1137192',
   response: '',
   endpoints: {
     test: 'https://r2.smarthealthit.org',
@@ -11,8 +13,8 @@ export const state = {
 }
 
 export const mutations = {
-  SET_CLIENT_ID(state, newValue) {
-    state.clientId = newValue
+  SET_PATIENT_ID(state, newValue) {
+    state.patientId = newValue
   },
   SET_SERVICE_URL(state, newValue) {
     state.serviceUrl = newValue
@@ -28,9 +30,9 @@ export const actions = {
   testCall({ state, commit }) {
     axios.defaults.baseURL = state.serviceUrl
     axios
-      .get('/patient/' + state.clientId, {
+      .get(`/Observation?category=vital-signs&patient=${state.patientId}`, {
         headers: {
-          Authorization: `Bearer ${state.access_token}`,
+          Authorization: `Bearer ${state.accessToken}`,
         },
       })
       .then((response) => {
@@ -39,5 +41,16 @@ export const actions = {
       .catch((error) => {
         commit('SET_RESPONSE', error)
       })
+  },
+  oauth({ state, commit }) {},
+  authorization({ state, commit }) {
+    // const authorizeRequest = {
+    //   response_type: 'code',
+    //   client_id: state.client_id,
+    //   redirect_uri: state.redirect_uri,
+    //   scope: 'launch/patient patient/*.read',
+    //   // "uniqueHash",
+    //   aud: "NOADU"
+    // }
   },
 }

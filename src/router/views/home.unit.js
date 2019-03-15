@@ -25,7 +25,7 @@ describe('@views/home', () => {
       store,
       computed: {
         serviceUrl: () => 'foo',
-        clientId: () => 'bar',
+        patientId: () => 'bar',
         response: () => 'baz',
       },
     })

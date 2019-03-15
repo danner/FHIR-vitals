@@ -18,12 +18,12 @@ export default {
         return this.$store.state.auth.serviceUrl
       },
     },
-    clientId: {
-      set(clientId) {
-        this.$store.commit('auth/SET_CLIENT_ID', clientId)
+    patientId: {
+      set(patientId) {
+        this.$store.commit('auth/SET_CLIENT_ID', patientId)
       },
       get() {
-        return this.$store.state.auth.clientId
+        return this.$store.state.auth.patientId
       },
     },
     response() {
@@ -40,6 +40,46 @@ export default {
   <Layout>
     <h1>Home Page</h1>
     <v-layout row wrap>
+      <v-form id="oauth-form" @submit.prevent="oauth">
+        Oauth
+        <v-text-field
+          v-model="serviceUrl"
+          name="serviceUrl"
+          label="FHIR Service URL"
+        ></v-text-field>
+        <v-text-field
+          v-model="patientId"
+          name="patientId"
+          label="Client ID"
+        ></v-text-field>
+        <v-btn type="submit" form="oauth-form">
+          Get Oauth
+        </v-btn>
+      </v-form>
+
+      Response: {{ oauth }}
+    </v-layout>
+    <v-layout row wrap>
+      <v-form id="fhir-response-form" @submit.prevent="testCall">
+        Authentication
+        <v-text-field
+          v-model="serviceUrl"
+          name="serviceUrl"
+          label="FHIR Service URL"
+        ></v-text-field>
+        <v-text-field
+          v-model="patientId"
+          name="patientId"
+          label="Client ID"
+        ></v-text-field>
+        <v-btn type="submit" form="fhir-response-form">
+          Get Access Token
+        </v-btn>
+      </v-form>
+
+      Response: {{ token }}
+    </v-layout>
+    <v-layout row wrap>
       <v-form id="fhir-response-form" @submit.prevent="testCall">
         FHIR Response
         <v-text-field
@@ -48,9 +88,9 @@ export default {
           label="FHIR Service URL"
         ></v-text-field>
         <v-text-field
-          v-model="clientId"
-          name="clientId"
-          label="Client ID"
+          v-model="patientId"
+          name="patientId"
+          label="Patient ID"
         ></v-text-field>
         <v-btn type="submit" form="fhir-response-form">
           Get Response
