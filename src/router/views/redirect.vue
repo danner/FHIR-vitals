@@ -1,6 +1,8 @@
 <script>
 import Layout from '@layouts/main'
 
+// TODO: Store response data when landing here.
+
 export default {
   page: {
     title: 'redirect',

@@ -24,9 +24,15 @@ describe('@views/home', () => {
       localVue,
       store,
       computed: {
-        serviceUrl: () => 'foo',
-        patientId: () => 'bar',
-        response: () => 'baz',
+        clientId: () => '',
+        clientSecret: () => '',
+        serviceUrl: () => '',
+        authUrl: () => '',
+        tokenUrl: () => '',
+        authorizationCode: () => '',
+        accessToken: () => '',
+        patientId: () => '',
+        response: () => '',
       },
     })
     expect(element.textContent).toContain('Home Page')

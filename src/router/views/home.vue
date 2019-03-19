@@ -10,6 +10,54 @@ export default {
   },
   components: { Layout },
   computed: {
+    clientId: {
+      set(clientId) {
+        this.$store.commit('auth/SET_CLIENT_ID', clientId)
+      },
+      get() {
+        return this.$store.state.auth.clientId
+      },
+    },
+    clientSecret: {
+      set(clientSecret) {
+        this.$store.commit('auth/SET_CLIENT_SECRET', clientSecret)
+      },
+      get() {
+        return this.$store.state.auth.clientSecret
+      },
+    },
+    authUrl: {
+      set(authUrl) {
+        this.$store.commit('auth/SET_AUTH_URL', authUrl)
+      },
+      get() {
+        return this.$store.state.auth.authUrl
+      },
+    },
+    tokenUrl: {
+      set(tokenUrl) {
+        this.$store.commit('auth/SET_TOKEN_URL', tokenUrl)
+      },
+      get() {
+        return this.$store.state.auth.tokenUrl
+      },
+    },
+    authorizationCode: {
+      set(authorizationCode) {
+        this.$store.commit('auth/SET_AUTHORIZATION_CODE', authorizationCode)
+      },
+      get() {
+        return this.$store.state.auth.authorizationCode
+      },
+    },
+    accessToken: {
+      set(accessToken) {
+        this.$store.commit('auth/SET_ACCESS_TOKEN', accessToken)
+      },
+      get() {
+        return this.$store.state.auth.accessToken
+      },
+    },
     serviceUrl: {
       set(serviceUrl) {
         this.$store.commit('auth/SET_SERVICE_URL', serviceUrl)
@@ -57,27 +105,48 @@ export default {
         </v-btn>
       </v-form>
 
-      Response: {{ oauth }}
+      <div>Auth URL: {{ authUrl }}</div>
+      <div>Token Url: {{ tokenUrl }}</div>
     </v-layout>
     <v-layout row wrap>
-      <v-form id="fhir-response-form" @submit.prevent="testCall">
+      <v-form id="authorization-form" @submit.prevent="authorization">
         Authentication
         <v-text-field
-          v-model="serviceUrl"
-          name="serviceUrl"
-          label="FHIR Service URL"
+          v-model="authUrl"
+          name="authUrl"
+          label="Authorization URL"
         ></v-text-field>
         <v-text-field
-          v-model="patientId"
-          name="patientId"
+          v-model="clientId"
+          name="clientId"
           label="Client ID"
         ></v-text-field>
-        <v-btn type="submit" form="fhir-response-form">
+        <v-btn type="submit" form="authorization-form">
           Get Access Token
         </v-btn>
       </v-form>
 
-      Response: {{ token }}
+      Authorization Code: {{ authorizationCode }}
+    </v-layout>
+    <v-layout row wrap>
+      <v-form id="token-form" @submit.prevent="token">
+        Access Token
+        <v-text-field
+          v-model="tokenUrl"
+          name="tokenUrl"
+          label="Token URL"
+        ></v-text-field>
+        <v-text-field
+          v-model="authorizationCode"
+          name="authorizationCode"
+          label="Authorization Code"
+        ></v-text-field>
+        <v-btn type="submit" form="token-form">
+          Get Access Token
+        </v-btn>
+      </v-form>
+
+      Access Token: {{ accessToken }}
     </v-layout>
     <v-layout row wrap>
       <v-form id="fhir-response-form" @submit.prevent="testCall">
@@ -86,6 +155,11 @@ export default {
           v-model="serviceUrl"
           name="serviceUrl"
           label="FHIR Service URL"
+        ></v-text-field>
+        <v-text-field
+          v-model="accessToken"
+          name="accessToken"
+          label="Access Token"
         ></v-text-field>
         <v-text-field
           v-model="patientId"
