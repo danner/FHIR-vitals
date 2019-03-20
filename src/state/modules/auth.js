@@ -53,6 +53,20 @@ export const mutations = {
 export const getters = {}
 
 export const actions = {
+  init() {
+    let self = this
+    this.watch(
+      () => {
+        return localStorage.authorizationCode
+      },
+      () => {
+        return self.commit(
+          'SET_AUTHORIZATION_CODE',
+          localStorage.authorizationCode
+        )
+      }
+    )
+  },
   testCall({ state, commit }) {
     axios
       .get(`/Observation?category=vital-signs&patient=${state.patientId}`, {
@@ -86,7 +100,7 @@ export const actions = {
       })
   },
   authorization({ state, commit }) {
-    const authorizeRequest = {
+    const params = {
       response_type: 'code',
       client_id: state.clientId,
       redirect_uri: 'localhost:8080/redirect',
@@ -94,13 +108,13 @@ export const actions = {
       state: 'uniqueHash',
       aud: state.serviceUrl,
     }
-    axios
-      .get(state.authUrl, {
-        params: authorizeRequest,
+
+    window.open(
+      axios.getUri({
+        url: state.authUrl,
+        params,
       })
-      .then((response) => {
-        commit('SET_AUTHORIZATION_CODE', response.data.code)
-      })
+    )
   },
   token({ state, commit }) {
     const tokenRequest = {

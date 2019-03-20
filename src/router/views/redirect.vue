@@ -1,8 +1,6 @@
 <script>
 import Layout from '@layouts/main'
 
-// TODO: Store response data when landing here.
-
 export default {
   page: {
     title: 'redirect',
@@ -11,8 +9,16 @@ export default {
   components: { Layout },
   data() {
     return {
-      message: window.location.search,
+      authorizationCode: '',
     }
+  },
+  watch: {
+    authorizationCode: function(newCode, oldCode) {
+      localStorage.authorizationCode = newCode
+    },
+  },
+  mounted() {
+    this.authorizationCode = window.location.search
   },
 }
 </script>
@@ -21,8 +27,8 @@ export default {
   <Layout>
     <h1 :class="$style.title">
       Redirect
-      <template v-if="message">
-        {{ message }}
+      <template v-if="authorizationCode">
+        Got authorization code: {{ authorizationCode }}
       </template>
     </h1>
   </Layout>
