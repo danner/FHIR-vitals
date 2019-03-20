@@ -1,13 +1,13 @@
 import axios from 'axios'
 
 export const state = {
-  clientId: '',
+  clientId: 'default_client_id',
   clientSecret: '',
   serviceUrl: 'http://launch.smarthealthit.org/v/r2/sim/eyJoIjoiMSJ9/fhir',
   authUrl: '',
   tokenUrl: '',
-  authorizationCode: 'foo',
-  accessToken: 'foo',
+  authorizationCode: '',
+  accessToken: '',
   patientId: 'smart-1137192',
   response: '',
   endpoints: {

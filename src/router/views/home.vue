@@ -78,6 +78,16 @@ export default {
       return this.$store.state.auth.response
     },
   },
+  mounted() {
+    let self = this
+    this.authorizationCode = localStorage.authorizationCode
+    this.$watch(
+      () => localStorage.authorizationCode,
+      (newVal, oldVal) => {
+        self.authorizationCode = newVal
+      }
+    )
+  },
   methods: {
     ...authMethods,
   },
@@ -104,9 +114,6 @@ export default {
           Get Oauth
         </v-btn>
       </v-form>
-
-      <div>Auth URL: {{ authUrl }}</div>
-      <div>Token Url: {{ tokenUrl }}</div>
     </v-layout>
     <v-layout row wrap>
       <v-form id="authorization-form" @submit.prevent="authorization">
@@ -125,8 +132,6 @@ export default {
           Get Access Token
         </v-btn>
       </v-form>
-
-      Authorization Code: {{ authorizationCode }}
     </v-layout>
     <v-layout row wrap>
       <v-form id="token-form" @submit.prevent="token">

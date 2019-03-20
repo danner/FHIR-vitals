@@ -18,7 +18,8 @@ export default {
     },
   },
   mounted() {
-    this.authorizationCode = window.location.search
+    let params = new URLSearchParams(window.location.search)
+    this.authorizationCode = params.get('code')
   },
 }
 </script>
