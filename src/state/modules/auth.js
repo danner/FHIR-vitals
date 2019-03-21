@@ -103,7 +103,7 @@ export const actions = {
     const params = {
       response_type: 'code',
       client_id: state.clientId,
-      redirect_uri: 'localhost:8080/redirect',
+      redirect_uri: 'http://localhost:8080/redirect',
       scope: 'launch/patient patient/*.read',
       state: 'uniqueHash',
       aud: state.serviceUrl,
@@ -120,7 +120,7 @@ export const actions = {
     const tokenRequest = {
       grant_type: 'authorization_code',
       code: state.authorizationCode,
-      redirect_uri: 'localhost:8080/redirect',
+      redirect_uri: 'http://localhost:8080/redirect',
       client_id: state.clientId,
     }
     axios
