@@ -12,14 +12,10 @@ export default {
       authorizationCode: '',
     }
   },
-  watch: {
-    authorizationCode: function(newCode, oldCode) {
-      localStorage.authorizationCode = newCode
-    },
-  },
   mounted() {
     let params = new URLSearchParams(window.location.search)
     this.authorizationCode = params.get('code')
+    localStorage.authorizationCode = params.get('code')
   },
 }
 </script>
@@ -28,9 +24,9 @@ export default {
   <Layout>
     <h1 :class="$style.title">
       Redirect
-      <template v-if="authorizationCode">
+      <div v-if="authorizationCode">
         Got authorization code: {{ authorizationCode }}
-      </template>
+      </div>
     </h1>
   </Layout>
 </template>

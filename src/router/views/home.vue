@@ -129,7 +129,7 @@ export default {
           label="Client ID"
         ></v-text-field>
         <v-btn type="submit" form="authorization-form">
-          Get Access Token
+          Get Authentication Code
         </v-btn>
       </v-form>
     </v-layout>

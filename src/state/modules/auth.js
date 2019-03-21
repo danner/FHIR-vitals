@@ -1,4 +1,6 @@
 import axios from 'axios'
+import qs from 'qs'
+import uuid from 'uuid'
 
 export const state = {
   clientId: 'default_client_id',
@@ -105,7 +107,7 @@ export const actions = {
       client_id: state.clientId,
       redirect_uri: 'http://localhost:8080/redirect',
       scope: 'launch/patient patient/*.read',
-      state: 'uniqueHash',
+      state: uuid(),
       aud: state.serviceUrl,
     }
 
@@ -124,8 +126,11 @@ export const actions = {
       client_id: state.clientId,
     }
     axios
-      .get(state.tokenUrl, {
-        params: tokenRequest,
+      .post(state.tokenUrl, qs.stringify(tokenRequest), {
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       })
       .then((response) => {
         commit('SET_ACCESS_TOKEN', response.data.access_token)
