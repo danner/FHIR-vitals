@@ -2,13 +2,14 @@
 import appConfig from '@src/app.config'
 import Layout from '@layouts/main'
 import { authMethods } from '@state/helpers'
+import VitalsChart from '@src/components/VitalsChart'
 
 export default {
   page: {
     title: 'Home',
     meta: [{ name: 'description', content: appConfig.description }],
   },
-  components: { Layout },
+  components: { Layout, VitalsChart },
   computed: {
     clientId: {
       set(clientId) {
@@ -177,6 +178,7 @@ export default {
       </v-form>
 
       Response: {{ response }}
+      <VitalsChart />
     </v-layout>
   </Layout>
 </template>
