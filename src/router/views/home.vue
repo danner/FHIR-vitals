@@ -82,12 +82,11 @@ export default {
   mounted() {
     let self = this
     this.authorizationCode = localStorage.authorizationCode
-    this.$watch(
-      () => localStorage.authorizationCode,
-      (newVal, oldVal) => {
-        self.authorizationCode = newVal
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'authorizationCode') {
+        self.authorizationCode = event.newValue
       }
-    )
+    })
   },
   methods: {
     ...authMethods,
